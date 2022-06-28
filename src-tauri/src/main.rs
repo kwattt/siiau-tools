@@ -25,7 +25,8 @@ fn main() {
       Ok(())
     })
     .invoke_handler(tauri::generate_handler![
-      requests::get_info_cicler
+      requests::get_info_cicler,
+      requests::get_info_materias
     ])    
     .run(ctx)
     .expect("ocurrió un error al ejecutar la aplicación [tauri]");

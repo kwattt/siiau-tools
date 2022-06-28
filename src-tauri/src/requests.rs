@@ -218,7 +218,30 @@ pub async fn get_info_cicler() -> Option<serde_json::Value>  {
         "centros": centros,
     });
 
-
-
     return Some(json);
 }  
+
+
+#[tauri::command]
+pub async fn get_info_materias(materias : Vec<String>, ciclo: String, centro: String) -> Option<serde_json::Value>  {
+
+    let materias_data : MateriasData = MateriasData {
+        materias,
+        ciclo,
+        centro,
+    };
+
+    println!("{:?}", materias_data);
+
+    let req = get_materias(materias_data).await;
+    if req.is_err() {
+        return None
+    }
+
+    let materias = req.unwrap();
+    let json = serde_json::json!({
+        "materias": materias,
+    });
+
+    return Some(json); 
+}
