@@ -1,16 +1,47 @@
 <script lang="ts">
-    import {TextInput, Button } from "carbon-components-svelte"
+    import {TextInput, Button} from "carbon-components-svelte"
     import {invoke} from "@tauri-apps/api"
-    import type { MateriaPayload, MateriasData } from "./types"
-    import { periodo, materias_data, materias_query } from './stores'
+    import type { MateriaPayload, MateriasData, Materia } from "./types"
+    import { periodo, materias_data, materias_query, materias_hided } from './stores'
     let materia_select = ''
 
     const updateMateriasData = (materias : any) => {
-        const dict = materias.reduce((acc: MateriasData, materia: any) => {
-            if(!(materia.clave in acc))
-                acc[materia.clave] = [materia]
-            else
-                acc[materia.clave] = [...acc[materia.clave], materia]
+        const dict = materias.reduce((acc: MateriasData, materia: Materia) => {
+            if(!(materia.clave in acc)){
+                if(materia.clave in $materias_data){
+                    let v_old = $materias_data[materia.clave].find(v => v.nrc === materia.nrc)
+                    if(v_old && v_old.activo)
+                        acc[materia.clave] = [materia]
+                    else
+                    {
+                        let tmp_materia = materia
+                        materia.activo = false
+                        acc[materia.clave] = [tmp_materia]
+                    }
+                }
+                else
+                    {
+                        $materias_hided = [...$materias_hided, materia.clave]
+                        acc[materia.clave] = [materia]
+                    }
+            } else {
+                if(materia.clave in $materias_data){
+                    let v_old = $materias_data[materia.clave].find(v => v.nrc === materia.nrc)
+                    if(v_old && v_old.activo)
+                        acc[materia.clave] = [...acc[materia.clave], materia]
+                    else
+                    {
+                        let tmp_materia = materia
+                        materia.activo = false
+                        acc[materia.clave] = [...acc[materia.clave], tmp_materia]
+                    }
+                }
+                else 
+                {
+                    $materias_hided = [...$materias_hided, materia.clave]
+                    acc[materia.clave] = [...acc[materia.clave], materia]
+                }
+            }
             return acc
         }, {})
 
@@ -31,9 +62,9 @@
         if(materia_select && !$materias_query.includes(materia_select) && materia_select.length < 10){
             $materias_query = [...$materias_query, materia_select.toUpperCase()]
             materia_select = ''
-            // get dom element with materia_input id
             const input = document.getElementById('materia_input') as HTMLInputElement
-            input.focus()
+            if(input)
+                input.focus()
         }
     }
 

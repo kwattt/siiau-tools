@@ -3,9 +3,11 @@
     import Buscador from "./Buscador.svelte"
     import MateriasLista from './MateriasLista.svelte'
     import Calendar from './Calendar.svelte'
+    import Generador from './Generador.svelte'
 </script>
 
 <Cicler/> 
 <Buscador/>
 <MateriasLista/>
+<Generador/>
 <Calendar/>

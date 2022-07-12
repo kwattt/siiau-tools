@@ -5,7 +5,7 @@
   import CalendarHeatMap from "carbon-icons-svelte/lib/CalendarHeatMap.svelte";
 
   document.addEventListener('contextmenu', (event) => event.preventDefault())
-  let currentIndex = 1
+  let currentIndex = 0
 </script>
 
 <div style:margin="1%">
@@ -15,7 +15,7 @@
         <CalendarHeatMap style="margin-right: 0.5rem;" /> Scheduler
       </div>
     </Switch>
-    <Switch text="Dos" />
+    <Switch text="~" />
   </ContentSwitcher>
 </div>
 

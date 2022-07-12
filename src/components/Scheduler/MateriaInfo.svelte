@@ -1,16 +1,14 @@
 <script lang='ts'>
     import type {MateriasData} from "./types"
     import MateriaInfo from "./Materia.svelte"
-
+    import {materias_hided} from './stores'
     export let materias : MateriasData = {}
-    let hideMateria : string[] = []
-
 
     const handleHideMateria = (materia: string) => {
-        if(hideMateria.includes(materia)){
-            hideMateria = hideMateria.filter(m => m !== materia)
+        if($materias_hided.includes(materia)){
+            $materias_hided = $materias_hided.filter(m => m !== materia)
         }else{
-            hideMateria = [...hideMateria, materia]
+            $materias_hided = [...$materias_hided, materia]
         }
     }
 
@@ -29,7 +27,7 @@
     >
         <h5>{materias[materia][0].clave} - {materias[materia][0].nombre} - {materias[materia][0].creditos}</h5>
     </div>
-    {#if !hideMateria.includes(materia)}
+    {#if !$materias_hided.includes(materia)}
         <MateriaInfo bind:materias={materias[materia]}/>
     {/if}
 {/each}
@@ -44,9 +42,9 @@
     .materia-info:hover
         background-color: #6f6f6f
 
-    .contenedor-materias::-webkit-scrollbar
+    :global(::-webkit-scrollbar)
         width: 1rem
-    .contenedor-materias::-webkit-scrollbar-thumb
+    :global(::-webkit-scrollbar-thumb)
         background-color: darkgrey
         outline: 1px solid slategrey
 

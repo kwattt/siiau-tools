@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button, DataTable, Link } from "carbon-components-svelte";
+  import { Button, DataTable } from "carbon-components-svelte";
   import { Checkmark, Close } from "carbon-icons-svelte";
   import type { Materia } from "./types";
 
@@ -113,5 +113,5 @@
     padding: 0.6rem
 
   :global(td)
-    user-select: all
+    user-select: text
 </style>

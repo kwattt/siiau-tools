@@ -11,6 +11,7 @@ style:margin = "10px"
     style:flex-direction = "column"
     style:margin-top = "10px"
 >
+    <h4>Materias seleccionadas</h4>
     <MateriaInfo bind:materias={$materias_data}/>
 </div>
 </div>

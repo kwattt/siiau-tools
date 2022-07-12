@@ -30,7 +30,8 @@ export type Materia = {
   cupos: number,
   disponibles: number,
   profesores: string[],
-  horas: Sesion[]
+  horas: Sesion[],
+  color: string
 }
 
 export type MateriaPayload = {
@@ -41,3 +42,4 @@ export type MateriasData = {
   [key: string]: Materia[];
 }
 
+export type Horarios = Array<Materia[]>
