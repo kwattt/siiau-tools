@@ -1,23 +1,10 @@
 <script lang="ts">
-  import { ContentSwitcher, Switch } from 'carbon-components-svelte'
   import Test2 from './components/Test2.svelte'
   import Scheduler from './components/Scheduler/Scheduler.svelte'
-  import CalendarHeatMap from "carbon-icons-svelte/lib/CalendarHeatMap.svelte";
 
   document.addEventListener('contextmenu', (event) => event.preventDefault())
   let currentIndex = 0
 </script>
-
-<div style:margin="1%">
-  <ContentSwitcher bind:selectedIndex={currentIndex} size="xl">
-    <Switch>
-      <div style="display: flex; align-items: center;">
-        <CalendarHeatMap style="margin-right: 0.5rem;" /> Scheduler
-      </div>
-    </Switch>
-    <Switch text="~" />
-  </ContentSwitcher>
-</div>
 
 <div style:margin="1.5%">
   {#if currentIndex === 0}
@@ -25,7 +12,7 @@
   {:else if currentIndex === 1}
     <Test2 />
   {/if}
-</div> 
+</div>
 
 <style lang="sass">
   :global(html) 

@@ -1,24 +1,21 @@
 <script lang="ts">
     import { Button, Checkbox, NumberInput } from "carbon-components-svelte";
-    import {selected, horario} from './stores'
+    import {selected, horario, horarios_generados, selected_item} from './stores'
     import {cartesian, parse_materias} from './cartesian'
     import type { Horarios, Materia } from "./types";
 
     let maxIterations = 10000 
     let maxHorarios = 100
     let deathHours = 2 
-    let avaliable = false // ok
-    let wrong = false // ok
-    let toggle = true
+    let avaliable = false 
+    let wrong = false 
+    let toggle = false
     let totalTime = ""
-
-    let selected_item = -1
-    let horarios_generados : Horarios = []
 
     const randColor = () => {return Math.floor(Math.random()*16777215).toString(16)}
 
     const seleccionarHorario = (val: Materia[], index: number) => {
-        selected_item = index
+        $selected_item = index
         let withColors = val.map(materia => {
             return {
                 ...materia,
@@ -75,8 +72,8 @@
 
         let result = cartesian(maxIterations, ...to_cartesian)
 
-        selected_item = -1
-        horarios_generados = parse_materias(result, maxIterations, maxHorarios, deathHours+1)
+        $selected_item = -1
+        $horarios_generados = parse_materias(result, maxIterations, maxHorarios, deathHours+1)
     }
 
 </script>
@@ -125,21 +122,23 @@
 {/if}
 
 <Button
-    kind="primary"
-    size="small"
-    on:click={async () => {await GenerarMaterias()}}
->Generar</Button>
+kind="primary"
+size="small"
+on:click={async () => {await GenerarMaterias()}}
+>
+Generar
+</Button>
 
-{#if horarios_generados.length > 0 && totalTime} 
+{#if $horarios_generados.length > 0 && totalTime} 
     Tiempo de ejecución: {totalTime}
 {/if}
 
 <div
     id="resultados"
 >
-    {#each horarios_generados as val, index}
+    {#each $horarios_generados as val, index}
         <div 
-            class={index == selected_item ? "result selected" : "result"}
+            class={index == $selected_item ? "result selected" : "result"}
             on:click={()=>seleccionarHorario(val, index)}
         >
             {index+1}

@@ -51,6 +51,15 @@
       "active": false
     },
     "allowlist": {
+      "fs": {
+        "readFile": true,
+        "writeFile": true
+      },
+      "dialog": {
+        "save": true,
+        "open": true,
+        "message": true
+      },
       "shell": {
         "open": true
       }

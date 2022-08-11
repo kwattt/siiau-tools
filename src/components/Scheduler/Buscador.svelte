@@ -2,7 +2,7 @@
     import {TextInput, Button} from "carbon-components-svelte"
     import {invoke} from "@tauri-apps/api"
     import type { MateriaPayload, MateriasData, Materia } from "./types"
-    import { periodo, materias_data, materias_query, materias_hided } from './stores'
+    import { periodo, materias_data, materias_query, materias_hided, last_update } from './stores'
     let materia_select = ''
 
     const updateMateriasData = (materias : any) => {
@@ -73,6 +73,7 @@
         .then((data: any) => {
             const res = data as MateriaPayload
             updateMateriasData(res.materias)
+            $last_update = new Date();
         })
     }
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+
     import { onDestroy } from "svelte"
     import {horario} from './stores'
 
@@ -28,7 +29,6 @@
 
     $: {
       calendario = newCalendar()
-      console.log($horario)
       if($horario.length > 0){
         $horario.forEach(materia => {
           materia.horas.forEach(ses => {
@@ -61,8 +61,10 @@
             let currentHourHeight = currentTimeInPercent * calendarHeight / 100
 
             calendarClockBar.style.top = `${currentHourHeight+startOffset.clientHeight-4}px`
+          calendarClockBar.style.visibility = 'visible'
         }
-
+        else 
+          calendarClockBar.style.visibility = 'hidden'
     }, 1000)
 
     onDestroy(() => clearInterval(updateBar))
@@ -146,7 +148,33 @@
           </div>
       </div>
   </div>
+
+  <div>
+      <h4>Horario seleccionado</h4>
+        {#each $horario as hora}
+          <div>
+            <h5>{hora.nombre}</h5>
+            <div>
+              {#each hora.horas as sesion}
+                <div>
+                  <div>
+                    {sesion.entrada} - {sesion.salida}
+                  </div>
+                  <div>
+                    {#each sesion.dias as dia}
+                      {dia}
+                    {/each}
+                  </div>
+                </div>
+              {/each}
+            </div>
+          </div>
+        {/each}
+  </div>
+
 </div>
+
+
 <style lang="sass">
   #calendar-container //. center
       display: flex
@@ -168,7 +196,7 @@
     padding-right: 5vw
     border-bottom: 1px solid rgba(0, 0, 0, 0.3)
 
-  .day
+  .day 
     padding-right: 5vw
     border-bottom: 1px solid rgba(0, 0, 0, 0.3)
     padding: 1vh
