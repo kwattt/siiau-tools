@@ -2,7 +2,7 @@
     import {TextInput, Button} from "carbon-components-svelte"
     import {invoke} from "@tauri-apps/api"
     import type { MateriaPayload, MateriasData, Materia } from "./types"
-    import { periodo, materias_data, materias_query, materias_hided, last_update } from './stores'
+    import { periodo, materias_data, materias_query, last_update } from './stores'
     let materia_select = ''
 
     const updateMateriasData = (materias : any) => {
@@ -20,10 +20,7 @@
                     }
                 }
                 else
-                    {
-                        $materias_hided = [...$materias_hided, materia.clave]
-                        acc[materia.clave] = [materia]
-                    }
+                    acc[materia.clave] = [materia]
             } else {
                 if(materia.clave in $materias_data){
                     let v_old = $materias_data[materia.clave].find(v => v.nrc === materia.nrc)
@@ -37,10 +34,7 @@
                     }
                 }
                 else 
-                {
-                    $materias_hided = [...$materias_hided, materia.clave]
                     acc[materia.clave] = [...acc[materia.clave], materia]
-                }
             }
             return acc
         }, {})

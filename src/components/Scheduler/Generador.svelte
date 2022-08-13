@@ -2,14 +2,14 @@
     import { Button, Checkbox, NumberInput } from "carbon-components-svelte";
     import {selected, horario, horarios_generados, selected_item} from './stores'
     import {cartesian, parse_materias} from './cartesian'
-    import type { Horarios, Materia } from "./types";
+    import type { Materia } from "./types";
 
     let maxIterations = 10000 
     let maxHorarios = 100
     let deathHours = 2 
     let avaliable = false 
     let wrong = false 
-    let toggle = false
+    let toggle = true
     let totalTime = ""
 
     const randColor = () => {return Math.floor(Math.random()*16777215).toString(16)}
@@ -58,7 +58,7 @@
                         save = false
                         return true
                     }
-                })
+                }) 
 
                 if(save)
                     acc2.push(nrc)
@@ -95,10 +95,10 @@
     id="parametros"
 >
     <div class="dselector">
-    <NumberInput class="dselector" bind:value={maxIterations} label="Iteraciones máximas"/>
+    <NumberInput hideSteppers class="dselector" bind:value={maxIterations} label="Iteraciones máximas"/>
 </div>
     <div class="dselector">
-    <NumberInput class="dselector" bind:value={maxHorarios} label="Horarios máximos"/>
+    <NumberInput hideSteppers class="dselector" bind:value={maxHorarios} label="Horarios máximos"/>
 </div>
     <div class="dselector">
     <NumberInput class="dselector" bind:value={deathHours} label="Horas muertas"/>

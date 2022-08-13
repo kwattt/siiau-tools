@@ -1,15 +1,18 @@
 <script lang='ts'>
     import type {MateriasData} from "./types"
-    import MateriaInfo from "./Materia.svelte"
-    import {materias_hided} from './stores'
-    export let materias : MateriasData = {}
+    import Materia from "./Materia.svelte"
+    import {Modal} from 'carbon-components-svelte'
 
-    const handleHideMateria = (materia: string) => {
-        if($materias_hided.includes(materia)){
-            $materias_hided = $materias_hided.filter(m => m !== materia)
-        }else{
-            $materias_hided = [...$materias_hided, materia]
-        }
+    export let materias : MateriasData = {}
+    type Showing = {
+        [key: string]: boolean
+    }
+    let isShowing : Showing = {}
+
+    $: {
+        Object.keys(materias).forEach(clave => {
+            isShowing[clave] = false
+        })
     }
 
 </script>
@@ -19,18 +22,33 @@
     style:max-height = "50vh"
     style:overflow-y = "auto"
 >
-
-{#each Object.keys(materias) as materia}
-    <div
-        class="materia-info"
-        on:click={() => handleHideMateria(materia)}
-    >
-        <h5>{materias[materia][0].clave} - {materias[materia][0].nombre} - {materias[materia][0].creditos}</h5>
+    <div>
+        {#each Object.keys(materias) as materia}
+        <div>
+            <div
+                on:click = {() => {
+                    isShowing[materia] = true
+                }}
+                class="materia-info"
+            >
+                <h5>{materias[materia][0].clave} - {materias[materia][0].nombre} - {materias[materia][0].creditos}</h5>
+            </div>
+            <Modal 
+                primaryButtonText="Cerrar" 
+                modalHeading={materia} 
+                bind:open={isShowing[materia]} 
+                on:open 
+                on:close
+                on:click:button--primary={() => {
+                    isShowing[materia] = false
+                }}
+                size="lg"
+            >
+                <Materia bind:materias={materias[materia]}/>
+            </Modal>
+        </div>
+        {/each}
     </div>
-    {#if !$materias_hided.includes(materia)}
-        <MateriaInfo bind:materias={materias[materia]}/>
-    {/if}
-{/each}
 
 </div>
 

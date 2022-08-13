@@ -2,16 +2,15 @@
     import { save, open, message} from '@tauri-apps/api/dialog';
     import { readTextFile, writeTextFile } from "@tauri-apps/api/fs"
     import {Button} from "carbon-components-svelte"
-    import {materias_data, last_update, periodo, materias_hided, materias_query, horario, horarios_generados, selected_item} from "./stores"
+    import {materias_data, last_update, periodo, materias_query, horario, horarios_generados, selected_item} from "./stores"
 
     let showSave = true
 
     const isValidJsonData = (data: any) => {
         if(
-            data.hasOwnProperty('periodo') &&
+            data.hasOwnProperty('periodo') && 
             data.hasOwnProperty('last_update') &&
             data.hasOwnProperty('materias_data') &&
-            data.hasOwnProperty('materias_hided') &&
             data.hasOwnProperty('materias_query') &&
             data.hasOwnProperty('horario') && 
             data.hasOwnProperty('horarios_generados') &&
@@ -36,7 +35,6 @@
                     periodo: $periodo,
                     last_update: $last_update,
                     materias_data: $materias_data,
-                    materias_hided: $materias_hided,
                     materias_query: $materias_query,
                     horario: $horario,
                     selected_item: $selected_item,
@@ -73,7 +71,6 @@
                     $periodo = data.periodo
                     $last_update = data.last_update
                     $materias_data = data.materias_data
-                    $materias_hided = data.materias_hided
                     $materias_query = data.materias_query
                     $horario = data.horario
                     $horarios_generados = data.horarios_generados

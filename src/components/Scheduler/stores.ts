@@ -31,7 +31,6 @@ export const periodo = writable<rdata>({
   centro: ""
 })
 
-export const materias_hided = writable<string[]>([])
 export const materias_query = writable<string[]>([])
 export const horario = writable<Materia[]>([])
 
