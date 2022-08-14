@@ -11,10 +11,14 @@
   id="scheduler"
 >
   <div
+    id="top-scheduler"
+  >
+  <div
     class="scheduler-element"
   >
     <Config/>
   </div>
+
   <div
     class="scheduler-element"
   >
@@ -25,6 +29,7 @@
   >
   <Buscador/>
   </div>
+</div>
   <div
     class="scheduler-element"
   >
@@ -43,6 +48,9 @@
 </div>
 
 <style lang="sass">
+  #top-scheduler
+    border: solid 1px rgba(255, 255, 255, 0.2)
+
   .scheduler-element
-    margin-top: 2.5%
+    margin-top: 1.5%
 </style>

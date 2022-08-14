@@ -43,3 +43,16 @@ export type MateriasData = {
 }
 
 export type Horarios = Array<Materia[]>
+
+export type hourFilter = {
+  [key: string]: number[]
+}
+
+export type Config = {
+  blockTime: hourFilter,
+  maxIterations : number; 
+  maxHorarios : number;
+  deathHours : number;
+  avaliable : boolean;
+  wrong : boolean;
+}

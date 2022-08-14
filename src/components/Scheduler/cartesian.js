@@ -49,7 +49,7 @@ export const parse_materias = (result, max_iterations, max_horarios, horas_muert
             inex[d] = {}
           }
 
-          Array.from(new Array(ses.salida-ses.entrada), (x, i) => i + ses.entrada).some(hora => {
+          Array.from(new Array(ses.salida-ses.entrada), (_, i) => i + ses.entrada).some(hora => {
             if (!inex[d][hora]){
               inex[d][hora] = e.nrc
             }
@@ -66,8 +66,10 @@ export const parse_materias = (result, max_iterations, max_horarios, horas_muert
     })
 
     // horas muertas
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Object.entries(inex).forEach(([_, h]) => {
       let lastHour = -1 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(h).forEach(([hora, _]) => {
         if(lastHour == -1)
           lastHour = hora

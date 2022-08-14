@@ -1,26 +1,17 @@
 <script lang="ts">
-  import { Button, DataTable } from "carbon-components-svelte";
-  import { Checkmark, Close } from "carbon-icons-svelte";
+  import { DataTable, Checkbox } from "carbon-components-svelte";
   import type { Materia } from "./types";
-
   export let materias : Materia[] 
+  export let hideCheck = false
 
   const formatMateriaData = () => {
-
-    // iterate Materias and return an array of objects
-
     const materias_data = materias.map((materia, id) => {
-      const {
-        activo,
-        nrc,
+      const { 
         nombre,
-        creditos,
-        horas,
-        profesores,
+        nrc,
         disponibles, 
         cupos,
         seccion,
-        clave
       } = materia;
 
       return {
@@ -30,7 +21,7 @@
         cupos: `${cupos} | ${disponibles}`,
         horario: ``,
         profesores: ``,
-        status: activo ? "Activo" : "Inactivo"
+        status: nombre
       };
     });
 
@@ -44,13 +35,14 @@
   class="data-table-materia"
 >
 <DataTable
+  size={hideCheck ? "compact" : "short"}
   headers={[
     { key: "nrc", value: "NRC" },
-    { key: "seccion", value: "Seccion" },
-    { key: "cupos", value: "Cupos" },
+    { key: "seccion", value: "Sección" },
+    { key: "cupos", value: "Cupo" },
     { key: "horario", value: "Horario" },
     { key: "profesores", value: "Profesores" },
-    { key: "status", value: "Status" },
+    { key: "status", value: hideCheck ? "Nombre" : "Incluir" },
   ]}
   rows={formatMateriaData()}
 >
@@ -76,7 +68,11 @@
           {#each materias[row.id].horas as {entrada, salida, dias, edificio, aula, periodo}}
             <tr>
               <td>{entrada}-{salida}</td>
-              <td>{dias.join(" | ")}</td>
+              <td>
+                {#each dias as day}
+                  <div>{day}</div>
+                {/each}
+              </td>
               <td>{edificio}</td>
               <td>{aula}</td>
             </tr>
@@ -85,20 +81,17 @@
       </table>
 
     {/if}
-    {#if cell.key === "status" && row.id in materias} 
-      <Button 
-        kind={materias[row.id].activo ? "primary" : "danger"}
-        size="small"
-        on:click={() => {
-          let newmaterias = materias
-          newmaterias[row.id].activo = !newmaterias[row.id].activo
-          materias = newmaterias
-        }}
-        iconDescription={materias[row.id].activo ? "Activo" : "Inactivo"}
-        icon={materias[row.id].activo ? Checkmark : Close}
+    {#if cell.key === "status" && row.id in materias && !hideCheck} 
+      <Checkbox 
+        hideLabel
+        bind:checked={materias[row.id].activo}
       /> 
     {:else}
-      {cell.value}
+      <div
+        style:max-width="100px"
+      >
+        {cell.value}
+      </div>
     {/if}
   </svelte:fragment>
 </DataTable>

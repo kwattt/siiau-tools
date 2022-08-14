@@ -63,11 +63,11 @@
     }
 
     const buscarMaterias = () => {
+        $last_update = new Date();
         invoke('get_info_materias', {materias: $materias_query, ciclo: $periodo.ciclo, centro: $periodo.centro})
         .then((data: any) => {
             const res = data as MateriaPayload
             updateMateriasData(res.materias)
-            $last_update = new Date();
         })
     }
 

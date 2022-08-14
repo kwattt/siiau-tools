@@ -1,8 +1,8 @@
 import { writable, derived } from "svelte/store";
-import type { MateriasData, Materia, Horarios } from "./types";
+import type { MateriasData, Materia, Horarios, Config } from "./types";
 
 export const materias_data = writable<MateriasData>({});
-export const last_update = writable<Date>(new Date());
+export const last_update = writable<Date|null>(null);
 
 export const selected = derived(
   materias_data,
@@ -36,3 +36,11 @@ export const horario = writable<Materia[]>([])
 
 export const horarios_generados = writable<Horarios>([])
 export const selected_item = writable<number>(-1)
+export const config = writable<Config>({
+  blockTime: {},
+  maxIterations : 10000, 
+  maxHorarios : 100,
+  deathHours : 2,
+  avaliable : false, 
+  wrong : false 
+})

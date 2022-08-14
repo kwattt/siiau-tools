@@ -2,9 +2,10 @@
     import { save, open, message} from '@tauri-apps/api/dialog';
     import { readTextFile, writeTextFile } from "@tauri-apps/api/fs"
     import {Button} from "carbon-components-svelte"
-    import {materias_data, last_update, periodo, materias_query, horario, horarios_generados, selected_item} from "./stores"
+    import {materias_data, last_update, periodo, materias_query, horario, horarios_generados, selected_item, config} from "./stores"
 
     let showSave = true
+    const zeroPad = (num: number, places: number) => String(num).padStart(places, '0')
 
     const isValidJsonData = (data: any) => {
         if(
@@ -29,10 +30,10 @@
         });
 
         if(filePath) {
-            console.log("saving to", filePath)
             const data = JSON.stringify(
                 {
                     periodo: $periodo,
+                    config: $config,
                     last_update: $last_update,
                     materias_data: $materias_data,
                     materias_query: $materias_query,
@@ -41,7 +42,6 @@
                     horarios_generados: $horarios_generados
                 }
             )
-            console.log(data)
             await writeTextFile(filePath, data)
         }
     }
@@ -62,14 +62,15 @@
                 data = JSON.parse(object)
             }
             catch(e) {
-                console.log
                 await message("El archivo no es un JSON válido", "Error")
             }
             if(data)
             {
                 if(isValidJsonData(data)){
                     $periodo = data.periodo
-                    $last_update = data.last_update
+                    if(data.hasOwnProperty('config'))
+                        $config = data.config
+                    $last_update = new Date(data.last_update)
                     $materias_data = data.materias_data
                     $materias_query = data.materias_query
                     $horario = data.horario
@@ -91,10 +92,20 @@
     {#if showSave}
     <Button on:click={saveFile} kind="tertiary" size="small">Guardar configuración</Button>
     {/if}
+
+    {#if $last_update}
+        {#key $last_update}
+            <div
+                style:margin-top='5px'
+            >
+            Ultima actualizacion: {$last_update.getDay()}/{$last_update.getMonth()}/{$last_update.getFullYear()}
+            A las {zeroPad($last_update.getHours(), 2)}:{zeroPad($last_update.getMinutes(), 2)}:{zeroPad($last_update.getSeconds(), 2)}
+            </div>
+        {/key}
+    {/if}
 </div>
 
 <style lang="sass">
     #sch-config 
-        padding-left: 5px
-        margin: 1%
+        margin-inline: 1%
 </style>

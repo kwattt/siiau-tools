@@ -1,10 +1,10 @@
 <script lang="ts">
-
     import { onDestroy } from "svelte"
+    import Materia from "./Materia.svelte"
     import {horario} from './stores'
-
-    let validDays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
-    let validHours = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+``
+    const validDays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
+    const validHours = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
     // create dict with valid days as keys
     
@@ -71,107 +71,95 @@
 
   </script>
 <div
+  style:display='flex'
+  style:flex-wrap='wrap'
 >
-  <div
-    style:position = 'relative'
-    style:background-color = 'rgba(111,111,111, 0.5)'
-    bind:this={calendarClockBar}
-    style:height = '4px'
-    style:margin = "-1%"
-  >
-</div>
-  <div
-      id="calendar-container"
-      style:margin = '1%'
-  >
-  
+    <div
+    >
+      <h4>Horario seleccionado</h4>
+        {#key $horario}
+          <Materia materias={$horario} hideCheck={true}/>
+        {/key}
+      </div>
+    <div
+      style:margin-left='6%'
+    >
       <div
-          style:display = 'flex'
-          bind:this={calendarContainer}
-      >
-  
-          <div
-          >
-              <div bind:this={startOffset} class="hour-left chour">&#8203;</div>
-              {#each validHours as hour}
-                  <div 
-                      class="hour-left chour"
-                  >{hour}</div>
-              {/each}
-          </div>
-          <div
-              style:display = 'flex'
-          >
-          {#each validDays as day}
-              <div>
-                  <div class="day chour">
-                      {day}
-                  </div>
-                      {#each validHours as hour}
-                          <div class="hour chour">
-                              {#if
-                                  (hour > 7 && calendario[day][hour] == calendario[day][hour-1])
-                              }
-                                  {#if
-                                      (calendario[day][hour] != '|')
-                                  }
+      style:position = 'relative'
+      style:background-color = 'rgba(111,111,111, 0.5)'
+      bind:this={calendarClockBar}
+      style:height = '4px'
+      style:margin = "-1%"
+    >
+    </div>
+    <div
+        id="calendar-container"
+        style:margin = '1%'
+    >
+    
+        <div
+            style:display = 'flex'
+            bind:this={calendarContainer}
+        >
+            <div
+            >
+                <div bind:this={startOffset} class="hour-left chour">&#8203;</div>
+                {#each validHours as hour}
+                    <div 
+                        class="hour-left chour"
+                    >{hour}</div>
+                {/each}
+            </div>
+            <div
+                style:display = 'flex'
+            >
+            {#each validDays as day}
+                <div>
+                    <div class="day chour">
+                        {day}
+                    </div>
+                        {#each validHours as hour}
+                            <div class="hour chour">
+                                {#if
+                                    (hour > 7 && calendario[day][hour] == calendario[day][hour-1])
+                                }
+                                    {#if
+                                        (calendario[day][hour] != '|')
+                                    }
+                                      <div class="materia"
+                                        style:background-color={`#${calendario[day][hour].color}`}
+                                      >
+                                        &#8203;
+                                      </div>
+                                    {:else}
+                                      <div
+                                        class="empty"
+                                      >
+                                        &#8203;
+                                      </div>
+                                    {/if}
+                                {:else if calendario[day][hour] == '|'}
+                                  <div
+                                    class="empty"
+                                  >
+                                  &#8203;
+                                  </div>
+                                {:else}
                                     <div class="materia"
                                       style:background-color={`#${calendario[day][hour].color}`}
-                                    >
-                                      &#8203;
+                                      style:color={isBright(`#${calendario[day][hour].color}`) ? 'black' : 'white'}
+                                    > 
+                                      {calendario[day][hour].nrc}
                                     </div>
-                                  {:else}
-                                    <div
-                                      class="empty"
-                                    >
-                                      &#8203;
-                                    </div>
-                                  {/if}
-                              {:else if calendario[day][hour] == '|'}
-                                <div
-                                  class="empty"
-                                >
-                                &#8203;
-                                </div>
-                              {:else}
-                                  <div class="materia"
-                                    style:background-color={`#${calendario[day][hour].color}`}
-                                    style:color={isBright(`#${calendario[day][hour].color}`) ? 'black' : 'white'}
-                                  > 
-                                    {calendario[day][hour].nrc}
-                                  </div>
-                              {/if}
-                          </div>
-                      {/each}
-              </div>
-          {/each}
-          </div>
-      </div>
-  </div>
-
-  <div>
-      <h4>Horario seleccionado</h4>
-        {#each $horario as hora}
-          <div>
-            <h5>{hora.nombre}</h5>
-            <div>
-              {#each hora.horas as sesion}
-                <div>
-                  <div>
-                    {sesion.entrada} - {sesion.salida}
-                  </div>
-                  <div>
-                    {#each sesion.dias as dia}
-                      {dia}
-                    {/each}
-                  </div>
+                                {/if}
+                            </div>
+                        {/each}
                 </div>
-              {/each}
+            {/each}
             </div>
-          </div>
-        {/each}
+        </div>
+    </div>
   </div>
-
 </div>
 
 
@@ -193,7 +181,6 @@
     padding: 1vh
 
   .hour 
-    padding-right: 5vw
     border-bottom: 1px solid rgba(0, 0, 0, 0.3)
 
   .day 

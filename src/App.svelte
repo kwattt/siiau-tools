@@ -18,7 +18,7 @@
   :global(html) 
     user-select: none
   :global(body::-webkit-scrollbar) 
-    width: 1rem
+    width: 0.6rem
   :global(body::-webkit-scrollbar-thumb)
     background-color: darkgrey
     outline: 1px solid slategrey

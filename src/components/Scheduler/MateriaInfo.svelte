@@ -11,8 +11,15 @@
 
     $: {
         Object.keys(materias).forEach(clave => {
-            isShowing[clave] = false
+            if (!(clave in isShowing)) {
+                isShowing[clave] = false
+            }
         })
+        isShowing = Object.keys(isShowing).reduce((acc: Showing, curr: string) => {
+            if(curr in materias)
+                acc[curr] = isShowing[curr]
+            return acc
+        } , {})
     }
 
 </script>
@@ -39,6 +46,7 @@
                 bind:open={isShowing[materia]} 
                 on:open 
                 on:close
+                hasScrollingContent
                 on:click:button--primary={() => {
                     isShowing[materia] = false
                 }}
@@ -61,7 +69,7 @@
         background-color: #6f6f6f
 
     :global(::-webkit-scrollbar)
-        width: 1rem
+        width: 0.6rem
     :global(::-webkit-scrollbar-thumb)
         background-color: darkgrey
         outline: 1px solid slategrey
