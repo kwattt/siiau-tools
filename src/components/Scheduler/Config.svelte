@@ -98,7 +98,7 @@
             <div
                 style:margin-top='5px'
             >
-            Ultima actualizacion: {$last_update.getDay()}/{$last_update.getMonth()}/{$last_update.getFullYear()}
+            Ultima actualizacion: {$last_update.getDate()}/{$last_update.getMonth()+1}/{$last_update.getFullYear()}
             A las {zeroPad($last_update.getHours(), 2)}:{zeroPad($last_update.getMinutes(), 2)}:{zeroPad($last_update.getSeconds(), 2)}
             </div>
         {/key}
